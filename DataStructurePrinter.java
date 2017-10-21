@@ -32,8 +32,6 @@ public class DataStructurePrinter {
 			System.out.println("f " + f.getName());
 		}
 
-		System.out.println("done");
-
 		// load the HashSet with the classes to be printed instantly.
 		printNowSet = new HashSet<Class<?>>();
 		printNowSet.add(int.class);
@@ -56,7 +54,6 @@ public class DataStructurePrinter {
 		printNowSet.add(Void.class);
 		printNowSet.add(Byte.class);
 		printNowSet.add(Object[].class);
-		printNowSet.add(Class.class);
 
 		// Strings too.
 		printNowSet.add(String.class);
@@ -82,28 +79,25 @@ public class DataStructurePrinter {
 			return;
 		}
 
-		Field[] fields = obj.getClass().getDeclaredFields();
-		for (int i = 0; i < fields.length; i++) {
-			printTabs(tabCount);
-			fields[i].setAccessible(true);
-
-			if (shouldBePrinted(fields[i].getType())) {
-
-				if (fields[i].getType().equals(Object[].class)) {
-					System.out.println(fields[i].getName() + "[] :");
-
-					for (Object o: (Object[])fields[i].get(obj)) {
-						System.out.println("doing" + o.getClass().getSimpleName());
-						printObjectRecursive(o, tabCount + 1);
-					}
-
-				} else {
-					System.out.println(fields[i].getName() + "d : " + fields[i].get(obj));
+		if (shouldBePrinted(obj.getClass())) {
+			if (obj.getClass().equals(Object[].class)) {
+				printTabs(tabCount);
+				System.out.println("Printing array:");
+				for (int i = 0; i < ((Object[]) obj).length; i++) {
+					printTabs(tabCount);
+					System.out.println("index " + i);
+					printObjectRecursive(((Object[]) obj)[i], tabCount + 1);
 				}
-
 			} else {
-				System.out.println(fields[i].getName() + " sdf" + fields[i].getType().getSimpleName() + " dong: ");
-				printObjectRecursive(fields[i].get(obj), tabCount + 1);
+				printTabs(tabCount);
+				System.out.println(obj);
+			}
+		} else {
+			Field[] fields = obj.getClass().getDeclaredFields();
+			for (Field f: fields) {
+				printTabs(tabCount);
+				System.out.println(f.getName() + " : ");
+				printObjectRecursive(f.get(obj), tabCount + 1);
 			}
 		}
 	}
