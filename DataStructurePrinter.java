@@ -81,11 +81,9 @@ public class DataStructurePrinter {
 
 		if (shouldBePrinted(obj.getClass())) {
 			if (obj.getClass().equals(Object[].class)) {
-				printTabs(tabCount);
-				System.out.println("Printing array:");
 				for (int i = 0; i < ((Object[]) obj).length; i++) {
 					printTabs(tabCount);
-					System.out.println("index " + i);
+					System.out.print(i + " : ");
 					printObjectRecursive(((Object[]) obj)[i], tabCount + 1);
 				}
 			} else {
@@ -95,6 +93,7 @@ public class DataStructurePrinter {
 		} else {
 			Field[] fields = obj.getClass().getDeclaredFields();
 			for (Field f: fields) {
+				f.setAccessible(true);
 				printTabs(tabCount);
 				System.out.println(f.getName() + " : ");
 				printObjectRecursive(f.get(obj), tabCount + 1);
