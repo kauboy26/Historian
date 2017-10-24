@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 public class DataStructurePrinter {
 	private HashSet<Class<?>> printNowSet;
-	private HashSet<Field> dontPrintTheseSet;
 	private int tabWidth = 4;
 
 
@@ -20,17 +19,6 @@ public class DataStructurePrinter {
 	}
 
 	public DataStructurePrinter() {
-
-		// don't print these
-		dontPrintTheseSet = new HashSet<Field>(
-			Arrays.asList((new Object()).getClass().getDeclaredFields()));
-
-		dontPrintTheseSet.addAll(Arrays.asList(
-			Object[].class.getDeclaredFields()));
-
-		for (Field f: dontPrintTheseSet) {
-			System.out.println("f " + f.getName());
-		}
 
 		// load the HashSet with the classes to be printed instantly.
 		printNowSet = new HashSet<Class<?>>();
@@ -104,7 +92,7 @@ public class DataStructurePrinter {
 	/**
 	* Determines whether a field should be printed immediately, or examined.
 	*/
-	public boolean shouldBePrinted(Class<?> clazz) {
+	private boolean shouldBePrinted(Class<?> clazz) {
 		return printNowSet.contains(clazz);
 	}
 
