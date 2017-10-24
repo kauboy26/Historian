@@ -62,7 +62,7 @@ public class DataStructurePrinter {
 
 	private void printObjectRecursive(Object obj, int tabCount) throws IllegalAccessException{
 		if (obj == null) {
-			printTabs(tabCount);
+			// printTabs(tabCount);
 			System.out.println("null");
 			return;
 		}
@@ -75,15 +75,16 @@ public class DataStructurePrinter {
 					printObjectRecursive(((Object[]) obj)[i], tabCount + 1);
 				}
 			} else {
-				printTabs(tabCount);
+				// printTabs(tabCount);
 				System.out.println(obj);
 			}
 		} else {
+			System.out.println();
 			Field[] fields = obj.getClass().getDeclaredFields();
 			for (Field f: fields) {
 				f.setAccessible(true);
 				printTabs(tabCount);
-				System.out.println(f.getName() + " : ");
+				System.out.print(f.getName() + " : ");
 				printObjectRecursive(f.get(obj), tabCount + 1);
 			}
 		}
